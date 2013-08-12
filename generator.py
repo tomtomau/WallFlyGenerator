@@ -21,8 +21,12 @@ class User():
 		self.password = password
 		self.type = type
 
-	def __eq__(self, other):
-		return self.emailaddress == other.emailaddress 	
+	def __cmp__(self, other):
+		#print "start compare"
+		#print self.emailaddress
+		#print other.emailaddress
+		#print "end compare \n"
+		return (self.emailaddress == other.emailaddress)
 
 	def __str__(self):
 		return self.emailaddress
@@ -33,13 +37,18 @@ class User():
 class UserList():
 	
 	def __init__(self):
-		self.userlist = [User(None, None, None, None, None)] #starting from 1
+		self.userlist = [User("", "", "", "", "")] #starting from 1
 
 	def add(self, new):
 		for existing in self.userlist:
-			if existing == new:
+			#print "old: " + str(existing)
+			#print "new: " + str(new)
+			if str(existing) == str(new):
+				#print "clash existing email"
 				return 0
-			break
+			else:
+				pass
+				#print "no match, continue"
 		self.userlist.append(new)
 		return len(self.userlist)
 	
@@ -127,6 +136,7 @@ def generateUser(type):
 		user = User(first_name, last_name, emailaddress, password, type)
 		result = userList.add(user)
 		if result == 0:
+			#print "duplicate"
 			pass
 		else:
 			break
@@ -154,11 +164,10 @@ def generateData(agents, owners, properties):
 				tenancy = "INSERT INTO `tenancy` (property_id, tenant_id, start_date, end_date) VALUES ({0}, {1}, '12/8/13', '12/8/14');".format(propertyid, tenantid)
 				print tenancy			
 
-
 				management = "INSERT INTO `management` (property_id, agent_id) VALUES ({0}, {1});".format(propertyid, agentid)
 				print management
 			
 
-generateData(10,10,5)
+generateData(30,30,20)
 
 
